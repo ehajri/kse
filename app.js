@@ -4,6 +4,7 @@ var jsdom = require("jsdom");
 var fs = require('fs');
 var jquery = fs.readFileSync('./jquery.js', 'utf-8')
 var Definitions = require('./models.js');
+var Passwords = require('./password.js');
 
 // Application
 var App = {
@@ -16,13 +17,16 @@ var App = {
 		);
 	},
 	DuplicationCheck: function(objs) {
-		objs.forEach(o)
+		//objs.forEach(o)
 	},
 	SaveStock: function(records) {
-		var db  = orm.connect('mysql://****:****@***REMOVED***/stock');
+		var db  = orm.connect(Passwords.CONNECTION_STRING);
 		db.on('connect', function(error) {
+			if (error) {
+				throw error;
+			}
 			var Ticker = new Definitions.Ticker(db);
-		
+
 			Ticker.create(records, function (error, items) {
 				if (error) {
 					throw error;
@@ -34,7 +38,7 @@ var App = {
 	ReadStock: function() {
 		var self = this;
 		jsdom.env({
-			url: "***REMOVED******REMOVED***.aspx",
+			url: Passwords.URL1,
 			src: [jquery],
 			encoding: 'utf8',
 			done: function (errors, window) {
@@ -65,7 +69,8 @@ var App = {
 					obj['prev_date'] = str_to_date(obj['prev_date']);
 					objs.push(obj);
 				});
-				self.DuplicationCheck(objs);
+				//self.DuplicationCheck(objs);
+				self.SaveStock(objs);
 			},
 		});
 	}
