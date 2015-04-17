@@ -88,7 +88,7 @@ var Repository = function(db) {
 		}
 	}
 }
-var repo = new Repository(new DB({host: '***REMOVED***', user: '***REMOVED***', password: '***REMOVED***', database: 'stock'}));
+var repo = new Repository(new DB({host: '***REMOVED***', user: '****', password: '****', database: 'stock'}));
 repo.Add(new Table('***REMOVED***', []), {ticker_id: 1, last: 1, change: 1, open: 1, high: 1, low: 1, vol: 1, trade: 1, value: 1, prev: 1, ref: 1, pref_date: '04/24/2015', bid: 1, ask: 1});
 repo.Add(new Table('***REMOVED***', []), {ticker_id: 2, last: 2, change: 2, open: 2, high: 2, low: 2, vol: 2, trade: 2, value: 2, prev: 2, ref: 2, pref_date: '04/24/2015', bid: 2, ask: 2});
 repo.Save();

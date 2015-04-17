@@ -19,7 +19,7 @@ var App = {
 		objs.forEach(o)
 	},
 	SaveStock: function(records) {
-		var db  = orm.connect('mysql://***REMOVED***:***REMOVED***@***REMOVED***/stock');
+		var db  = orm.connect('mysql://****:****@***REMOVED***/stock');
 		db.on('connect', function(error) {
 			var Ticker = new Definitions.Ticker(db);
 		
