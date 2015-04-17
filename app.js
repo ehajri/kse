@@ -44,7 +44,7 @@ var App = {
 			done: function (errors, window) {
 				if (errors) { throw errors; };
 				var $ = window.$;
-				var table = $('***REMOVED***');
+				var table = $('****');
 				var objs = [];
 				$('tr', table).each(function(a, tr) {
 					if (a == 0) return;

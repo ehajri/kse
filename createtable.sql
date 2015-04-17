@@ -1,4 +1,4 @@
-CREATE TABLE `***REMOVED***` (
+CREATE TABLE `****` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ticker_id` int(11) NOT NULL,
   `last` decimal(12,3) DEFAULT NULL,

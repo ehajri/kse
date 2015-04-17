@@ -1,6 +1,6 @@
 module.exports = {
 	'Ticker': function Ticker(_db) {
-		return _db.define('***REMOVED***', {
+		return _db.define('****', {
 	  		id:         {type: 'serial', key: true}, // the auto-incrementing primary key
 			ticker_id:  {type: 'integer' },
 			last: 		{type: 'number'},
