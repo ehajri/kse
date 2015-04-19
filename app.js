@@ -7,17 +7,17 @@ var Promise = require('promise');
 var jquery = fs.readFileSync('./jquery.js', 'utf-8')
 var Definitions = require('./models.js');
 var CONFIG = require('./hidden_config.js');
-
+var myorm = Promise.denodeify(require('orm').connect);
 
 // Application
 var App = {
 	Init: function() {
 		var self = this;
-		setTimeout(
+		setInterval(
 			function() {
 				self.ReadStock();
 			},
-			1000
+			50000
 		);
 	},
 	SaveStock: function(records) {
@@ -58,7 +58,7 @@ var App = {
 							var a = $('a', td).attr('href');
 							txt = a.split('=')[1];
 						} else {
-							txt = $(td).text().trim();
+							txt = replaceAll(',', '', $(td).text().trim());
 						}
 						v.push(txt);
 					});
@@ -72,8 +72,8 @@ var App = {
 					obj['prev_date'] = str_to_date(obj['prev_date']);
 					objs.push(obj);
 				});
-				DuplicationCheck(objs);
-				//self.SaveStock(objs);
+				//DuplicationCheck(objs);
+				self.SaveStock(objs);
 			},
 		});
 	}
@@ -84,39 +84,4 @@ var str_to_date = function(str) {
 	var dt = new Date(dtparts[2], dtparts[1] - 1, dtparts[0]);
 	return dt;
 };
-var doThisThing = function(result) {
-	if (result.length === 0)
-}
-
-
-
-var DuplicationCheck = function(objs) {
-	
-	var p = Promise.re
-	// crap. need rework and make better Promises.
-	console.log('checking', objs.length, 'objects');
-	var self = this;
-	var db  = orm.connect(CONFIG.CONNECTION_STRING);
-	var newobjs = [];
-	db.on('connect', function(error) {
-		if (error) {
-			throw error;
-		}
-		var Ticker = new Definitions.Tickers(db, CONFIG.DB_TABLE_1);
-		var myfind = Promise.denodeify(Ticker.find);
-		Promise.resolve(Func2(myfind)).then(function(x) { console.log('resolved'); });
-		
-	});
-}
-var Func1 = function(o) {
-	return myfind({ticker_id: o.ticker_id, prev_date: o.prev_date}).then(doThisThing);
-}
-var Func2 = function(myfind) {
-	return Promise.all(objs.map(Func1()).done(function(objs2) {
-		/*objs2.forEach(function(o) {
-			//console.log(typeof o.length);
-		});*/
-		//console.log(objs2);
-		db.close();
-	});
-}
+var replaceAll = function(find, replace, str) { return str.replace(new RegExp(find, 'g'), replace); }
