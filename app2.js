@@ -8,6 +8,7 @@ var jquery = fs.readFileSync('./jquery.js', 'utf-8')
 var Definitions = require('./models.js');
 var CONFIG = require('./hidden_config.js');
 var myorm = Promise.denodeify(require('orm').connect);
+var clone = require('clone');
 
 // Application
 var App = {
@@ -22,6 +23,7 @@ var App = {
 	},
 	SaveStock: function(records) {
 		console.log('Writing', records.length, 'at', new Date().toTimeString());
+		if (!util.isArray(records) || records.length == 0) { return; }
 		var db  = orm.connect(CONFIG.CONNECTION_STRING);
 		db.on('connect', function(error) {
 			if (error) {
@@ -78,69 +80,18 @@ var App = {
 		});
 	}
 };
-//App.Init();
+App.Init();
 var str_to_date = function(str) {
 	var dtparts = str.split('-');
 	var dt = new Date(dtparts[2], dtparts[1] - 1, dtparts[0]);
 	return dt;
 };
-var doThisThing = function(result) {
-	if (result.length === 0) {
-		
-	}
-}
 
-
-var alternate = 0;
 var DuplicationCheck = function(objs) {
-	objs = objs.slice(-5);
-	CheckAll(objs).done(function(results) {
-		console.log('CheckAll is *done*');
-		console.log(results);
-	}, function(error) {
-		console.log('CheckAll returned an error');
-		console.log(error);
-	});
-}
-var CheckAll = function(objs) {
-	console.log('CheckAll is called');
-	return Promise.all(objs.map(CheckEach));
+	console.log('Checking for duplication (', objs.length, ' records)');
+	Check(objs);
 }
 
-var CheckEach = function(obj, callback) {
-	console.log('CheckEach is called for', obj.ticker_id);
-	orm.connect(CONFIG.CONNECTION_STRING, function(error, db) {
-		if(error) { throw error; }
-		
-		var Ticker = new Definitions.Tickers(db, CONFIG.DB_TABLE_1);
-		
-		var a = Ticker.find({ticker_id: obj.ticker_id, prev_date: obj.prev_date});
-		console.log(obj.ticker_id, 'has', a.length);
-		db.close();
-		return Promise.resolve(a);
-		
-	});
-}
-var myormthenfunc = function (arg1, arg2, arg3, arg4) {
-	console.log('MyOrmThenFunc is called with', arg1, arg2, arg3, arg4);
-}
-var otherfunc = function(objs) {
-	var p = Promise.re
-	// crap. need rework and make better Promises.
-	console.log('checking', objs.length, 'objects');
-	var self = this;
-	var db  = orm.connect(CONFIG.CONNECTION_STRING);
-	var newobjs = [];
-	db.on('connect', function(error) {
-		if (error) {
-			throw error;
-		}
-		var Ticker = new Definitions.Tickers(db, CONFIG.DB_TABLE_1);
-		var myfind = Promise.denodeify(Ticker.find);
-		Promise.resolve(Func2(myfind)).then(function(x) { console.log('resolved'); });
-		
-	});
-}
 // thanks to ljharb:#node.js@freenode
 /*function getConnection() {
 	return new Promise(
@@ -178,32 +129,43 @@ function getConnection() {
 	return new Promise(
 			function (resolve, reject) {
 				orm.connect(CONFIG.CONNECTION_STRING, function (error, db) {
-					if (error) { reject(error); }
-					else { resolve(db); } }
-				);
+					if (error) {
+						reject(error);
+					} else {
+						resolve(db);
+					}
+				});
 			})
 }
-function checkExisting(obj) {
-	return getConnection()
-		   .then(function (db) {
-				return new Promise(
-					   	function (resolve, reject) {
-							new Definitions.Tickers(db, CONFIG.DB_TABLE_1).find({ticker_id: obj.ticker_id, prev_date: obj.prev_date}),
-							function (error, result) {
-								if (error) {
-									reject(error);
-								} else {
-									db.close();
-									resolve(result);
-								}
-							}
-						}
-				);
-			});
-}
 
-checkExisting({ticker_id: 108, prev_date: new Date(2015, 3, 16)}).then(function (result) {
-	console.log('hello');
-}).catch(function (error) {
-	console.log('catched');
-});
+function Check(objs) {
+	getConnection().then(function (db) {
+		function checkExisting(obj) {
+			var _db, _resolve, _reject;
+			function cb1(error, result) {
+				if (error) {
+					_reject(error);
+				} else {
+					var res = null;
+					if (result.length == 0) {
+						res = obj;
+					}
+					_resolve(res);
+				}
+			}
+			
+			function cb2(resolve, reject) {
+				_resolve = resolve; _reject = reject;
+				var Ticker = new Definitions.Tickers(db, CONFIG.DB_TABLE_1);
+				var o = clone(obj); delete o['id']
+				Ticker.find(o, cb1);
+			}
+			return new Promise(cb2);
+		}
+		Promise.all(objs.map(checkExisting)).done(function (result) {
+			db.close();
+			result = result.filter(function(n) { return n !== null; });
+			App.SaveStock(result);
+		});
+	});
+}

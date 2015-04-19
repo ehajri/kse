@@ -52,8 +52,7 @@ var ReadParticularTimeSale = function(window) {
 			if (b == 0) return;
 			
 			var td = $(td), txt = '';
-			txt = $(td).text().trim();
-
+			txt = replaceAll(',', '', $(td).text().trim());
 			v.push(txt);
 		});
 		if (v[0] === '' || v[1] === '' || v[2] === '') return;
@@ -103,6 +102,7 @@ p.then(function(r) {
 });
 var str_to_date2 = function(str) {
 	var tmparts = str.split(':');
-	var dt = new Date(new Date(2015, 3, 15).setHours(tmparts[0], tmparts[1], tmparts[2]));
+	var dt = new Date(new Date().setHours(tmparts[0], tmparts[1], tmparts[2]));
 	return dt;
 };
+var replaceAll = function(find, replace, str) { return str.replace(new RegExp(find, 'g'), replace); }
