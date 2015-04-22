@@ -13,13 +13,11 @@ var clone = require('clone');
 // Application
 var App = {
 	Init: function() {
-		var self = this;
-		setTimeout(
+		setInterval(
 			function() {
-				self.ReadStock();
-			},
-			1000
-		);
+				App.ReadStock();
+			}
+		, 20000);
 	},
 	SaveStock: function(records) {
 		console.log('Writing', records.length, 'at', new Date().toTimeString());
@@ -41,7 +39,6 @@ var App = {
 	},
 	ReadStock: function() {
 		console.log('Reading at', new Date().toTimeString());
-		var self = this;
 		jsdom.env({
 			url: CONFIG.URL_1,
 			src: [jquery],
@@ -79,7 +76,7 @@ var App = {
 			},
 		});
 	}
-};
+}
 App.Init();
 var str_to_date = function(str) {
 	var dtparts = str.split('-');
@@ -141,7 +138,7 @@ function getConnection() {
 function Check(objs) {
 	getConnection().then(function (db) {
 		function checkExisting(obj) {
-			var _db, _resolve, _reject;
+			var _resolve, _reject;
 			function cb1(error, result) {
 				if (error) {
 					_reject(error);
@@ -165,7 +162,11 @@ function Check(objs) {
 		Promise.all(objs.map(checkExisting)).done(function (result) {
 			db.close();
 			result = result.filter(function(n) { return n !== null; });
-			App.SaveStock(result);
+			if (result.length > 0) {
+				App.SaveStock(result);
+			} else {
+			    console.log('No new records to write.');
+			}
 		});
 	});
 }
