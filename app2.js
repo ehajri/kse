@@ -57,7 +57,7 @@ var App = {
 							var a = $('a', td).attr('href');
 							txt = a.split('=')[1];
 						} else {
-							txt = $(td).text().trim();
+							txt = replaceAll(',', '', $(td).text().trim());
 						}
 						v.push(txt);
 					});
@@ -169,4 +169,8 @@ function Check(objs) {
 			}
 		});
 	});
+}
+
+var replaceAll = function(find, replace, str) {
+    return str.replace(new RegExp(find, 'g'), replace);
 }

@@ -1,13 +1,16 @@
 // Application setup
 //var heapdump = require('heapdump');
-
-var request = require('request');
-var cheerio = require('cheerio');
-var CONFIG = require('./hidden_config.js');
-var Definitions = require('./models.js');
-var orm = require('orm');
-var Promise = require('promise');
 var Func = require('./functions');
+Array.prototype.indexOf2 = Func.indexOf2;
+
+var mocks       = require('./mocks');
+
+var request     = require('request');
+var cheerio     = require('cheerio');
+var CONFIG      = require('./hidden_config.js');
+var Definitions = require('./models.js');
+var orm         = require('orm');
+var Promise     = require('promise');
 
 function str_to_date(str) {
     var dtparts = str.split('-');
@@ -17,7 +20,7 @@ function str_to_date(str) {
 }
 
 function Fire() {
-	console.log('Reading at', new Date().toTimeString());
+	//console.log('Reading at', new Date().toTimeString());
     request(CONFIG.URL_1, function(error, response, body) {
         if (!error && response.statusCode == 200) {
             var $ = cheerio.load(body);
@@ -32,8 +35,8 @@ function Fire() {
                 
                 // push rest of data
                 $(tr).find('td+td').each(function(index, td) {
-                    v.push($(td).text().trim());
-                });
+                    v.push(replaceAll(',', '', $(td).text().trim()));
+                }); 
 
                 v[11] = str_to_date(v[11]);
                 objs.push(v);
@@ -48,32 +51,65 @@ function Fire() {
 }
 
 function DuplicationCheck(objs) {
-	console.log('Checking for duplication (', objs.length, ' records)');
+	//console.log('Checking for duplication (', objs.length, ' records)');
 	var objs2 = objs.map(function(a) { return constructObject(a); });
-	objs2.filter(function(a) { return App.Latest.indexOf2(a) === -1; });
-	/*objs2.forEach(function(a) {
-	   console.log('last', typeof a.last, a.last, ', vol', typeof a.vol, a.vol); 
-	});*/
-	//SaveStock(objs2);
+	var obj3 = objs2.filter(function(a) {
+	    for (var i = 0, l = App.Latest.length; i < l; i++) {
+	        if (App.Latest[i].ticker_id === a.ticker_id &&
+	            App.Latest[i].last      === a.last &&
+	            App.Latest[i].change    === a.change &&
+	            App.Latest[i].open      === a.open &&
+	            App.Latest[i].high      === a.high &&
+	            App.Latest[i].low       === a.low &&
+	            App.Latest[i].vol       === a.vol &&
+	            App.Latest[i].trade     === a.trade &&
+	            App.Latest[i].value     === a.value &&
+	            App.Latest[i].prev      === a.prev &&
+	            App.Latest[i].ref       === a.ref &&
+	            App.Latest[i].prev_date === a.prev_date &&
+	            App.Latest[i].bid       === a.bid &&
+	            App.Latest[i].ask       === a.ask)
+            {
+                return false;
+            }
+	    }
+	    return true;
+    });
+    
+    for (var i = 0, l = App.Latest.length; i < l; i++) {
+        for (var j = 0, k = objs2.length; j < k; j++) {
+            if (objs2[j].ticker_id == App.Latest[i].ticker_id) {
+                //console.log('in App.Latest:');
+                console.log(App.Latest[i]);//Print(App.Latest[i]);
+                //console.log('in Objs:');
+                console.log(objs2[j]);//Print(objs2[j]);
+                //console.log("****************************");
+                break;
+            }
+        }
+    }
+
+	//console.log(objs.length, objs2.length, obj3.length, App.Latest.length);
+	SaveStock(obj3);
 }
 
 function SaveStock(records) {
-	console.log('Writing', records.length, 'at', new Date().toTimeString());
+	//console.log('Writing', records.length, 'at', new Date().toTimeString());
 	if (records.constructor !== Array  || records.length == 0) {
-	    console.log('[SaveStock]', 'arg is not an array or is empty')
+	    //console.log('[SaveStock]', 'arg is not an array or is empty');
 	    records = null;
-	    Process();
+	    StartCycle();
     } else {
         var db  = orm.connect(CONFIG.CONNECTION_STRING);
         db.on('connect', function(error) {
         	if (error) {
         		throw error;
         	}
-        	console.log('[DB]', 'opened');
+        	//console.log('[DB]', 'opened');
         	
         	var Ticker = new Definitions.Tickers(db, CONFIG.DB_TABLE_1);
 	
-        	console.log('[SaveStock]', records.length);
+        	//console.log('[SaveStock]', records.length);
 
         	/*Ticker.create(records, function (error, items) {
         		if (error) {
@@ -81,8 +117,8 @@ function SaveStock(records) {
         			throw error;
         		}
 
-        db.close();			
-        Process();
+                db.close();
+                Process();
         	});*/
             records = null;
         	UpdateLatest(db);
@@ -98,7 +134,7 @@ function getConnection() {
 					if (error) {
 						reject(error);
 					} else {
-					    console.log('[DB]', 'opened');
+					    //console.log('[DB]', 'opened');
 						resolve(db);
 					}
 				});
@@ -123,7 +159,7 @@ function constructObject(array) {
 		bid: 		array[12],
 		ask: 		array[13]
     };
-    Print(obj);
+    //Print(obj);
     array = array2;
     obj = {
 		ticker_id:  array[0],
@@ -142,14 +178,14 @@ function constructObject(array) {
 		ask: 		array[13]
     };
     
-    Print(obj);
+    //Print(obj);
     array = null;
     return obj;
 }
 function Print(t) {
     console.log('ticker_id', t.ticker_id, 'last', t.last, 'change', t.change, 'open', t.open,
                 'high', t.high, 'low', t.low, 'vol', t.vol, 'trade', t.trade, 'value', t.value,
-                'prev', t.prev, 'ref', t.tref, 'prev_date', t.prev_date, 'bid', t.bid, 'ask', t.ask);
+                'prev', t.prev, 'ref', t.ref, 'prev_date', t.prev_date, 'bid', t.bid, 'ask', t.ask);
 }
 
 function Check(objs) {
@@ -177,18 +213,17 @@ function Check(objs) {
 			}
 			return new Promise(cb2);
 		}
-		console.log('[CheckThen]', objs.length);
+		//console.log('[CheckThen]', objs.length);
 		Promise.all(objs.map(checkExisting)).done(function (result) {
 		    objs = null;
-            tickermodel = null;
 			db.close();
 			db = null;
-		    console.log('[DB]', 'closed');
+		    //console.log('[DB]', 'closed');
 			result = result.filter(function(n) { return n !== null; });
 			if (result.length > 0) {
 				SaveStock(result);
 			} else {
-			    Process();
+			    StartCycle();
 			}
 		});
 	});
@@ -198,13 +233,14 @@ var App = {
     Latest: []
 }
 function StartCycle() {
-    App.Latest.forEach(function(a) {
+    /*App.Latest.forEach(function(a) {
        console.log(a); 
-    });
+    });*/
     setTimeout(function() {
         Fire();
     }, 5000);
 }
+
 function UpdateLatest(db) {
     var sql  = 'SELECT `ticker_id`, `last`, `change`, `open`, `high`, `low`, `vol`, `trade`, `value`, `prev`, `ref`,';
         sql += '`prev_date`, `bid`, `ask` FROM RQuotes INNER JOIN';
@@ -214,18 +250,37 @@ function UpdateLatest(db) {
     db.driver.execQuery(sql, function(error, data) {
         App.Latest = data;
         db.close();
-        console.log('[DB]', 'closed');
+        //console.log('[DB]', 'closed');
         StartCycle();
     });
     
 }
-function Init() {
-    Array.prototype.equals = Func.ArrayEquals;
-    Array.prototype.indexOf2 = Func.indexOf2;
-    Object.prototype.equals = Func.ObjectEquals;
 
-    getConnection().then(function(db) {
+function Init() {
+    //console.log('Starting..');
+
+    /*getConnection().then(function(db) {
         UpdateLatest(db);
-    });
+    }).catch(function(error) {
+        //console.log('DB', error.code);
+    });*/
+    
+    console.log("Hello");
+    var m1 = mocks.Mock1();
+    var m2 = mocks.Mock2();
+    
+    console.log(equals(m1[1], m1[1]));
+    console.log(equals(m1[1], m2[1]));
+}
+var replaceAll = function(find, replace, str) { return str.replace(new RegExp(find, 'g'), replace); }
+
+var equals = function(o1, o2) {
+    if (o1.ticker_id === o2.ticker_id && o1.last === o2.last && o1.change === o2.change && o1.open === o2.open &&
+        o1.high === o2.high && o1.low === o2.low && o1.vol === o2.vol && o1.trade === o2.trade &&
+        o1.value === o2.value && o1.prev === o2.prev && o1.ref === o2.ref && o1.prev_date === o2.prev_date &&
+        o1.bid === o2.bid && o1.ask === o2.ask) {
+       return true;
+    }
+    return false;
 }
 Init();
