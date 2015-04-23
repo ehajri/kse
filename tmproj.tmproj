@@ -3,20 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>timesale.js</string>
+	<string>app3.js</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>app.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-19T06:59:28Z</date>
+			<date>2015-04-22T20:49:24Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>createtable.sql</string>
 			<key>lastUsed</key>
-			<date>2015-04-19T22:09:49Z</date>
+			<date>2015-04-22T20:49:28Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -26,19 +26,33 @@
 			<key>filename</key>
 			<string>app2.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-19T21:57:39Z</date>
+			<date>2015-04-22T20:49:25Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>hidden_config.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-19T22:09:30Z</date>
+			<date>2015-04-22T21:39:20Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>functions.js</string>
+			<key>lastUsed</key>
+			<date>2015-04-22T21:42:47Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>app3.js</string>
+			<key>lastUsed</key>
+			<date>2015-04-22T21:42:47Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>models.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-19T22:06:44Z</date>
+			<date>2015-04-22T21:42:44Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -53,6 +67,8 @@
 		<dict>
 			<key>filename</key>
 			<string>test.js</string>
+			<key>lastUsed</key>
+			<date>2015-04-22T20:49:34Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -72,65 +88,49 @@
 			<key>filename</key>
 			<string>timesale.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-19T22:09:49Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2015-04-22T20:49:30Z</date>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>181</integer>
 	<key>metaData</key>
 	<dict>
-		<key>app.js</key>
+		<key>app3.js</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>7</integer>
+				<integer>3</integer>
 				<key>line</key>
-				<integer>61</integer>
+				<integer>53</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>49</integer>
+			<integer>29</integer>
 		</dict>
-		<key>app2.js</key>
+		<key>functions.js</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>17</integer>
 				<key>line</key>
-				<integer>171</integer>
+				<integer>39</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>134</integer>
-		</dict>
-		<key>createtable.sql</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>22</integer>
-				<key>line</key>
-				<integer>33</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>16</integer>
+			<integer>10</integer>
 		</dict>
 		<key>hidden_config.js</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>25</integer>
+				<integer>62</integer>
 				<key>line</key>
-				<integer>12</integer>
+				<integer>1</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -151,33 +151,17 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>timesale.js</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>41</integer>
-				<key>line</key>
-				<integer>5</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>hidden_config.js</string>
-		<string>app2.js</string>
-		<string>app.js</string>
+		<string>app3.js</string>
 		<string>models.js</string>
-		<string>createtable.sql</string>
-		<string>timesale.js</string>
+		<string>functions.js</string>
+		<string>hidden_config.js</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{184, 4}, {1249, 873}}</string>
+	<string>{{1276, 14}, {1283, 1403}}</string>
 </dict>
 </plist>

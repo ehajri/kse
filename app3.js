@@ -1,5 +1,5 @@
 // Application setup
-var heapdump = require('heapdump');
+//var heapdump = require('heapdump');
 
 var request = require('request');
 var cheerio = require('cheerio');
@@ -7,6 +7,7 @@ var CONFIG = require('./hidden_config.js');
 var Definitions = require('./models.js');
 var orm = require('orm');
 var Promise = require('promise');
+var Func = require('./functions');
 
 function str_to_date(str) {
     var dtparts = str.split('-');
@@ -15,7 +16,7 @@ function str_to_date(str) {
     return dt;
 }
 
-function doreq() {
+function Fire() {
 	console.log('Reading at', new Date().toTimeString());
     request(CONFIG.URL_1, function(error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -46,6 +47,16 @@ function doreq() {
     });
 }
 
+function DuplicationCheck(objs) {
+	console.log('Checking for duplication (', objs.length, ' records)');
+	var objs2 = objs.map(function(a) { return constructObject(a); });
+	objs2.filter(function(a) { return App.Latest.indexOf2(a) === -1; });
+	/*objs2.forEach(function(a) {
+	   console.log('last', typeof a.last, a.last, ', vol', typeof a.vol, a.vol); 
+	});*/
+	//SaveStock(objs2);
+}
+
 function SaveStock(records) {
 	console.log('Writing', records.length, 'at', new Date().toTimeString());
 	if (records.constructor !== Array  || records.length == 0) {
@@ -58,6 +69,8 @@ function SaveStock(records) {
         	if (error) {
         		throw error;
         	}
+        	console.log('[DB]', 'opened');
+        	
         	var Ticker = new Definitions.Tickers(db, CONFIG.DB_TABLE_1);
 	
         	console.log('[SaveStock]', records.length);
@@ -71,19 +84,13 @@ function SaveStock(records) {
         db.close();			
         Process();
         	});*/
-            db.close();
             records = null;
-            console.log('[DB]', 'closed');
-        	Process();
+        	UpdateLatest(db);
         });
     }
 }
 
-function DuplicationCheck(objs) {
-	console.log('Checking for duplication (', objs.length, ' records)');
-	Check(objs);
-	//DELETE objs = null;
-}
+
 function getConnection() {
 	return new Promise(
 			function (resolve, reject) {
@@ -97,8 +104,9 @@ function getConnection() {
 				});
 			})
 }
+
 function constructObject(array) {
-    
+    var array2 = array.map(function(a) { if (a === '') { return 0; } return a; });
     var obj = {
 		ticker_id:  array[0],
 		last: 		array[1],
@@ -115,9 +123,35 @@ function constructObject(array) {
 		bid: 		array[12],
 		ask: 		array[13]
     };
+    Print(obj);
+    array = array2;
+    obj = {
+		ticker_id:  array[0],
+		last: 		array[1],
+		change: 	array[2],
+		open: 		array[3],
+		high: 		array[4],
+		low: 		array[5],
+		vol: 		array[6],
+		trade: 		array[7],
+		value: 		array[8],
+		prev: 		array[9],
+		ref: 		array[10],
+		prev_date:  array[11],
+		bid: 		array[12],
+		ask: 		array[13]
+    };
+    
+    Print(obj);
     array = null;
     return obj;
 }
+function Print(t) {
+    console.log('ticker_id', t.ticker_id, 'last', t.last, 'change', t.change, 'open', t.open,
+                'high', t.high, 'low', t.low, 'vol', t.vol, 'trade', t.trade, 'value', t.value,
+                'prev', t.prev, 'ref', t.tref, 'prev_date', t.prev_date, 'bid', t.bid, 'ask', t.ask);
+}
+
 function Check(objs) {
 	getConnection().then(function (db) {
 		function checkExisting(array) {
@@ -159,16 +193,39 @@ function Check(objs) {
 		});
 	});
 }
-var tickermodel;
-function getTicker(db) {
-    if (!tickermodel) {
-        tickermodel = new Definitions.Tickers(db, CONFIG.DB_TABLE_1);
-    }
-    return tickermodel;
+
+var App = {
+    Latest: []
 }
-function Process() {
+function StartCycle() {
+    App.Latest.forEach(function(a) {
+       console.log(a); 
+    });
     setTimeout(function() {
-        doreq();
-    }, 10000);
+        Fire();
+    }, 5000);
 }
-doreq();
+function UpdateLatest(db) {
+    var sql  = 'SELECT `ticker_id`, `last`, `change`, `open`, `high`, `low`, `vol`, `trade`, `value`, `prev`, `ref`,';
+        sql += '`prev_date`, `bid`, `ask` FROM RQuotes INNER JOIN';
+        sql += '(SELECT `ticker_id`, MAX(`timestamp`) AS `timestamp` FROM RQuotes GROUP BY `ticker_id`)';
+        sql += 'AS T1 USING(`ticker_id`, `timestamp`) order by ticker_id asc';
+
+    db.driver.execQuery(sql, function(error, data) {
+        App.Latest = data;
+        db.close();
+        console.log('[DB]', 'closed');
+        StartCycle();
+    });
+    
+}
+function Init() {
+    Array.prototype.equals = Func.ArrayEquals;
+    Array.prototype.indexOf2 = Func.indexOf2;
+    Object.prototype.equals = Func.ObjectEquals;
+
+    getConnection().then(function(db) {
+        UpdateLatest(db);
+    });
+}
+Init();
