@@ -24,10 +24,15 @@ module.exports = {
     },
     Mock2: function() {
         return [
-            { ticker_id: 101, last: 860, change: 0, open: 860,
+            { ticker_id: '101', last: '860', change: '0', open: '860',
+            high: '860', low: '850', vol: '412186', trade: '24', value: '352960.96',
+            prev: '860', ref: '860', prev_date: 'Wed Apr 22 2015 00:00:00 GMT+0300 (AST)',
+            bid: '850', ask: '860' },
+            
+            /*{ ticker_id: 101, last: 860, change: 0, open: 860,
               high: 860, low: 850, vol: 412186, trade: 24, value: 352960.96,
               prev: 860, ref: 860, prev_date: 'Wed Apr 22 2015 00:00:00 GMT+0300 (AST)',
-              bid: 850, ask: 860 },
+              bid: 850, ask: 860 },*/
 
             { ticker_id: 102, last: 275, change: 0, open: 275,
               high: 275, low: 275, vol: 131250, trade: 7, value: 36093.75,

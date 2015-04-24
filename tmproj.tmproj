@@ -3,148 +3,216 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>app3.js</string>
+	<string>timesale.js</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
-			<string>app.js</string>
-			<key>lastUsed</key>
-			<date>2015-04-22T20:49:24Z</date>
-		</dict>
-		<dict>
-			<key>filename</key>
 			<string>createtable.sql</string>
 			<key>lastUsed</key>
-			<date>2015-04-22T20:49:28Z</date>
+			<date>2015-04-23T16:25:44Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
-			<string>jquery.js</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>app2.js</string>
+			<string>promise.note</string>
 			<key>lastUsed</key>
-			<date>2015-04-22T20:49:25Z</date>
+			<date>2015-04-23T16:25:14Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>hidden_config.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-22T21:39:20Z</date>
+			<date>2015-04-23T15:37:17Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>functions.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-22T21:42:47Z</date>
+			<date>2015-04-23T15:37:16Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
-			<string>app3.js</string>
+			<string>mocks.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-22T21:42:47Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2015-04-23T16:23:58Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>livestock.js</string>
+			<key>lastUsed</key>
+			<date>2015-04-23T16:31:53Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>models.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-22T21:42:44Z</date>
+			<date>2015-04-23T16:25:51Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>output.txt</string>
 			<key>lastUsed</key>
-			<date>2015-04-19T04:41:33Z</date>
+			<date>2015-04-23T16:26:19Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>output2.txt</string>
+			<key>lastUsed</key>
+			<date>2015-04-23T16:26:17Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>test.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-22T20:49:34Z</date>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>title.js</string>
-			<key>lastUsed</key>
-			<date>2015-04-19T04:42:27Z</date>
+			<date>2015-04-23T16:35:00Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>news.js</string>
+			<key>lastUsed</key>
+			<date>2015-04-23T16:35:04Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>obook.js</string>
+			<key>lastUsed</key>
+			<date>2015-04-23T16:36:00Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>timesale.js</string>
 			<key>lastUsed</key>
-			<date>2015-04-22T20:49:30Z</date>
+			<date>2015-04-23T16:36:00Z</date>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>181</integer>
 	<key>metaData</key>
 	<dict>
-		<key>app3.js</key>
+		<key>livestock.js</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>3</integer>
-				<key>line</key>
-				<integer>53</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>29</integer>
-		</dict>
-		<key>functions.js</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>17</integer>
-				<key>line</key>
-				<integer>39</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>10</integer>
-		</dict>
-		<key>hidden_config.js</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>62</integer>
-				<key>line</key>
 				<integer>1</integer>
+				<key>line</key>
+				<integer>16</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>14</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>16</integer>
+			</dict>
 		</dict>
-		<key>models.js</key>
+		<key>news.js</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>18</integer>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>2</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
 				<key>line</key>
 				<integer>0</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>2</integer>
+			</dict>
+		</dict>
+		<key>obook.js</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>63</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>output.txt</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>output2.txt</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>test.js</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>4</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>timesale.js</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>15</integer>
+				<key>line</key>
+				<integer>31</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -154,10 +222,13 @@
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>app3.js</string>
-		<string>models.js</string>
-		<string>functions.js</string>
-		<string>hidden_config.js</string>
+		<string>output2.txt</string>
+		<string>output.txt</string>
+		<string>test.js</string>
+		<string>news.js</string>
+		<string>obook.js</string>
+		<string>timesale.js</string>
+		<string>livestock.js</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
