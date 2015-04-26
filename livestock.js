@@ -12,34 +12,50 @@ function str_to_date(str) {
     str = null; dtparts = null;
     return dt;
 }
+
 function getSystemTimestamp() {
     return new Date().toTimeString().split(' ')[0];
 }
+
+
 function Fire() {
 	console.log(getSystemTimestamp(), 'Reading stocks..');
     request(CONFIG.URL_1, function(error, response, body) {
         if (!error && response.statusCode == 200) {
             var $ = cheerio.load(body);
-            var table = $(CONFIG.TABLE_ID_1);
+            var table = $('#ctl00_MainContent_RQGrid');
             var objs = [];
             table.find('tr+tr').each(function(a, tr) {
                 var v = [];
 
-                // push the id
-                var h = $(tr).find('td').eq(0).find('a').attr('href').split('=')[1];
-                v.push(h);
-                
-                // push rest of data
-                $(tr).find('td+td').each(function(index, td) {
-                    v.push(replaceAll(',', '', $(td).text().trim()));
-                }); 
+                tr = $(tr); // avalabil
 
-                v[11] = str_to_date(v[11]);
+                tr.find('td').each(function(in1, td) {
+                    td = $(td);
+
+                    var item = '';
+
+                    if (in1 === 0) {
+                      aa = td.find('a').attr('href');
+                      item = aa.split('=')[1];
+                    } else {
+                      item = replaceAll(',', '', $(td).text().trim());
+                    }
+
+                    if (in1 === 11) {
+                      item = str_to_date(item);
+                    }
+
+                    v.push(item);
+                });
+
                 objs.push(v);
             });
             $ = null;
-            DuplicationCheck(objs)
+            DuplicationCheck(objs);
             objs = null;
+        } else {
+          console.log(getSystemTimestamp(), error, response);
         }
         body = null;
         response = null;
@@ -76,7 +92,7 @@ function DuplicationCheck(array) {
 	console.log(getSystemTimestamp(), 'Checking for duplication (' + array.length, 'records)');
 	var objs = array.map(function(a) { return constructObject(a); });
 	var objs = Filter(App.Latest, objs);
-	
+
     console.log(getSystemTimestamp(), array.length - objs.length, 'found.', objs.length, 'to store.');
 	SaveStock(objs);
 }
@@ -94,16 +110,16 @@ function SaveStock(records) {
         		throw error;
         	}
         	console.log(getSystemTimestamp(), '[DB]', 'opened');
-        	
+
         	var Ticker = new Definitions.Tickers(db, CONFIG.DB_TABLE_1);
-	
+
         	Ticker.create(records, function (error, items) {
         		if (error) {
-        		    Process();
-        			throw error;
+        			console.log(getSystemTimestamp(), 'SaveStock', error);
+              StartCycle();
         		}
 
-                records = null;
+              records = null;
             	UpdateLatest(db);
             });
         });
@@ -158,9 +174,10 @@ var App = {
     Latest: []
 }
 function StartCycle() {
+    console.log(getSystemTimestamp(), 'Starting new cycle..');
     setTimeout(function() {
         Fire();
-    }, 5000);
+    }, 15000);
 }
 
 function UpdateLatest(db) {
@@ -175,7 +192,7 @@ function UpdateLatest(db) {
         console.log(getSystemTimestamp(),'[DB]', 'closed');
         StartCycle();
     });
-    
+
 }
 
 function Init() {
@@ -187,7 +204,9 @@ function Init() {
         console.log(getSystemTimestamp(),'DB', error.code);
     });
 }
-var replaceAll = function(find, replace, str) { return str.replace(new RegExp(find, 'g'), replace); }
+function replaceAll(find, replace, str) {
+  return str.replace(new RegExp(find, 'g'), replace);
+}
 
 function equals(o1, o2) {
     if (o1.ticker_id === o2.ticker_id && o1.last === o2.last && o1.change === o2.change && o1.open === o2.open &&
